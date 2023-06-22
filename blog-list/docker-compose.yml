@@ -6,3 +6,5 @@ services:
       - 5432:5432
     env_file:
       - .env
+    volumes:
+      - ./commands.sql:/docker-entrypoint-initdb.d/commands.sql
