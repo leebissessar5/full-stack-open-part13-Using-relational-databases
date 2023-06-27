@@ -14,9 +14,19 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
   const where = {}
   if (req.query.search) {
-    where.title = {
-      [Op.substring]: req.query.search,
-    }
+    const searchQuery = req.query.search
+    where[Op.or] = [
+      {
+        title: {
+          [Op.substring]: searchQuery,
+        },
+      },
+      {
+        author: {
+          [Op.substring]: searchQuery,
+        },
+      },
+    ]
   }
   const blogs = await Blog.findAll({
     attributes: { exclude: ['userId'] },
