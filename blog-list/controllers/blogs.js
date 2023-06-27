@@ -1,10 +1,16 @@
 const router = require('express').Router()
 
-const { Blog } = require('../models')
+const { Blog, User } = require('../models')
 
-router.get('/', async (_req, res) => {
-  const blogs = await Blog.findAll()
-  res.json(blogs)
+router.get('/', async (req, res) => {
+  const notes = await Blog.findAll({
+    attributes: { exclude: ['userId'] },
+    include: {
+      model: User,
+      attributes: ['name'],
+    },
+  })
+  res.json(notes)
 })
 
 router.post('/', async (req, res) => {
