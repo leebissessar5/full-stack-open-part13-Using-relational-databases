@@ -13,9 +13,12 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-  const user = await User.findOne()
-  const blog = await Blog.create({ ...req.body, userId: user.id })
-  res.json(blog)
+  try {
+    const user = await User.create(req.body)
+    res.json(user)
+  } catch (error) {
+    return res.status(400).json({ error })
+  }
 })
 
 router.get('/:id', async (req, res) => {

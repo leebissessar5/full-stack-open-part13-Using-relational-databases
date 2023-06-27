@@ -6,7 +6,7 @@ CREATE TABLE blogs (
   likes INTEGER DEFAULT 0
 );
 
-INSERT INTO blogs (author, url, title, likes)
-VALUES
-  ('John Doe', 'https://example.com/blog1', 'First Blog Post', 10),
-  ('Jane Smith', 'https://example.com/blog2', 'Second Blog Post', 5);
+-- INSERT INTO blogs (author, url, title, likes)
+-- VALUES
+--   ('John Doe', 'https://example.com/blog1', 'First Blog Post', 10),
+--   ('Jane Smith', 'https://example.com/blog2', 'Second Blog Post', 5);
