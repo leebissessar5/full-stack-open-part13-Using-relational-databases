@@ -1,35 +1,37 @@
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs')
 const router = require('express').Router()
 
 const { SECRET } = require('../utils/config')
 const User = require('../models/user')
-const Blog = require('../models/blog')
 
-const tokenExtractor = (req, res, next) => {
-  const authorization = req.get('authorization')
-  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    try {
-      req.decodedToken = jwt.verify(authorization.substring(7), SECRET)
-    } catch {
-      return res.status(401).json({ error: 'token invalid' })
-    }
-  } else {
-    return res.status(401).json({ error: 'token missing' })
-  }
-  next()
-}
+router.post('/', async (request, response) => {
+  const { username, password } = request.body
 
-router.post('/', tokenExtractor, async (req, res) => {
-  try {
-    const user = await User.findByPk(req.decodedToken.id)
-    const blog = await Blog.create({
-      ...req.body,
-      userId: user.id,
+  const user = await User.findOne({
+    where: {
+      username: username,
+    },
+    attributes: ['id', 'username', 'passwordHash'], // Include passwordHash in the query
+  })
+
+  const passwordCorrect =
+    user === null ? false : await bcrypt.compare(password, user.passwordHash)
+
+  if (!(user && passwordCorrect)) {
+    return response.status(401).json({
+      error: 'invalid username or password',
     })
-    res.json(blog)
-  } catch (error) {
-    return res.status(400).json({ error })
   }
+
+  const userForToken = {
+    username: user.username,
+    id: user.id,
+  }
+
+  const token = jwt.sign(userForToken, SECRET)
+
+  response.status(200).send({ token, username: user.username, name: user.name })
 })
 
 module.exports = router
