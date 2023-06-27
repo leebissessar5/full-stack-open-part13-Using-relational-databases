@@ -13,7 +13,7 @@ const middleware = require('./utils/middleware')
 // Middleware to parse JSON data
 app.use(express.json())
 app.use(middleware.tokenExtractor)
-app.use('/api/blogs', blogsRouter)
+app.use('/api/blogs', middleware.userExtractor, blogsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
 app.use(middleware.unknownEndpoint)
