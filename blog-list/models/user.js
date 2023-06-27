@@ -23,12 +23,19 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    passwordHash: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
   {
     sequelize,
     underscored: true,
     timestamps: true,
     modelName: 'user',
+    defaultScope: {
+      attributes: { exclude: ['passwordHash'] }, // Exclude passwordHash from query results by default
+    },
   }
 )
 
