@@ -1,21 +1,24 @@
 const router = require('express').Router()
-
 const { Blog, User } = require('../models')
 
+router.post('/', async (req, res) => {
+  const user = await User.findByPk(req.decodedToken.id)
+  const blog = await Blog.create({
+    ...req.body,
+    userId: user.id,
+  })
+  res.json(blog)
+})
+
 router.get('/', async (req, res) => {
-  const notes = await Blog.findAll({
+  const blogs = await Blog.findAll({
     attributes: { exclude: ['userId'] },
     include: {
       model: User,
       attributes: ['name'],
     },
   })
-  res.json(notes)
-})
-
-router.post('/', async (req, res) => {
-  const blog = await Blog.create(req.body)
-  return res.json(blog)
+  res.json(blogs)
 })
 
 router.delete('/:id', async (req, res) => {
