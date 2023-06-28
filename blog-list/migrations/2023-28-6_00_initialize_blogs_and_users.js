@@ -58,11 +58,6 @@ module.exports = {
         type: DataTypes.DATE,
         allowNull: false,
       },
-      disabled: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-      },
     })
     await queryInterface.addColumn('blogs', 'user_id', {
       type: DataTypes.INTEGER,

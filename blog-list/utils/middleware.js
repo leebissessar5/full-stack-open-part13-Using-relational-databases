@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const { SECRET } = require('../utils/config')
-const { User, Blog } = require('../models')
+const User = require('../models/user')
+const Session = require('../models/session')
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
@@ -28,12 +29,16 @@ const errorHandler = (error, request, response, next) => {
   next(error)
 }
 
-const tokenExtractor = (req, res, next) => {
+const tokenExtractor = async (req, res, next) => {
   const authorization = req.get('authorization')
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
     try {
       const decodedToken = jwt.verify(authorization.substring(7), SECRET)
       if (decodedToken.id) {
+        const session = await Session.findByPk(decodedToken.sessionId)
+        if (!session) {
+          return res.status(401).json({ error: 'token invalid' })
+        }
         req.user = decodedToken
       }
     } catch {
@@ -49,9 +54,6 @@ const userExtractor = async (req, res, next) => {
   if (req.user && req.user.id) {
     const userId = req.user.id
     req.user = await User.findByPk(userId)
-    if (req.user.disabled) {
-      return res.status(401).json({ error: 'user disabled' })
-    }
   }
   next()
 }
