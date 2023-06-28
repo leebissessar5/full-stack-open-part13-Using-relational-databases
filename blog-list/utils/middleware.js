@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 const { SECRET } = require('../utils/config')
-const { User } = require('../models')
+const { User, Blog } = require('../models')
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
@@ -12,6 +12,7 @@ const errorHandler = (error, request, response, next) => {
   } else if (
     [
       'SequelizeUniqueConstraintError',
+      'SequelizeEagerLoadingError',
       'SequelizeDatabaseError',
       'SequelizeValidationError',
       'ValidationError',
@@ -50,9 +51,19 @@ const userExtractor = async (req, res, next) => {
   next()
 }
 
+const blogExtractor = async (req, res, next) => {
+  req.blog = await Blog.findOne({
+    where: {
+      id: req.body.blogId,
+    },
+  })
+  next()
+}
+
 module.exports = {
   unknownEndpoint,
   errorHandler,
   tokenExtractor,
   userExtractor,
+  blogExtractor,
 }

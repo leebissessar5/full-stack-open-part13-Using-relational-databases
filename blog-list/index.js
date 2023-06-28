@@ -9,6 +9,7 @@ const blogsRouter = require('./controllers/blogs')
 const usersRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
 const authorRouter = require('./controllers/authors')
+const readingListRouter = require('./controllers/reading_lists')
 const middleware = require('./utils/middleware')
 
 // Middleware to parse JSON data
@@ -18,6 +19,12 @@ app.use('/api/login', loginRouter)
 app.use('/api/authors', authorRouter)
 app.use(middleware.tokenExtractor)
 app.use('/api/blogs', middleware.userExtractor, blogsRouter)
+app.use(
+  '/api/readinglists',
+  middleware.userExtractor,
+  middleware.blogExtractor,
+  readingListRouter
+)
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
 
