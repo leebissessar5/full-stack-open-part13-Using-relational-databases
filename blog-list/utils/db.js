@@ -16,12 +16,15 @@ const migrationConf = {
 const runMigrations = async () => {
   const migrator = new Umzug(migrationConf)
   const migrations = await migrator.up()
-
   console.log('Migrations up to date', {
     files: migrations.map((mig) => mig.name),
   })
 }
-
+const rollbackMigration = async () => {
+  await sequelize.authenticate()
+  const migrator = new Umzug(migrationConf)
+  await migrator.down()
+}
 const connectToDatabase = async () => {
   try {
     await sequelize.authenticate()
@@ -38,4 +41,4 @@ const connectToDatabase = async () => {
   }
 }
 
-module.exports = { connectToDatabase, sequelize }
+module.exports = { connectToDatabase, sequelize, rollbackMigration }
