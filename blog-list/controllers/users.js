@@ -8,9 +8,6 @@ router.get('/', async (req, res) => {
       {
         model: Blog,
       },
-      {
-        model: ReadingList,
-      },
     ],
   })
   res.json(users)
@@ -39,7 +36,21 @@ router.post('/', async (req, res) => {
 })
 
 router.get('/:id', async (req, res) => {
-  const user = await User.findByPk(req.params.id)
+  const user = await User.findByPk(req.params.id, {
+    attributes: { exclude: ['createdAt', 'updatedAt', 'id'] },
+    include: [
+      {
+        model: Blog,
+        as: 'readings',
+        attributes: {
+          exclude: ['userId', 'reading_list'],
+        },
+        through: {
+          attributes: [],
+        },
+      },
+    ],
+  })
   res.json(user)
 })
 
