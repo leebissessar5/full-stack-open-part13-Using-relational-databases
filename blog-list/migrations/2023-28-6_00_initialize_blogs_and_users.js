@@ -47,18 +47,18 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: false,
       },
-    })
-    await queryInterface.addColumn('users', 'password_hash', {
-      type: DataTypes.STRING,
-      allowNull: false,
-    })
-    await queryInterface.addColumn('users', 'created_at', {
-      type: DataTypes.DATE,
-      allowNull: false,
-    })
-    await queryInterface.addColumn('users', 'updated_at', {
-      type: DataTypes.DATE,
-      allowNull: false,
+      password_hash: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      created_at: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      updated_at: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
     })
     await queryInterface.addColumn('blogs', 'user_id', {
       type: DataTypes.INTEGER,
