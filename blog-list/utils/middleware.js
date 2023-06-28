@@ -17,6 +17,7 @@ const errorHandler = (error, request, response, next) => {
       'SequelizeValidationError',
       'ValidationError',
       'SyntaxError',
+      'Error',
     ].includes(error.name)
   ) {
     return response.status(400).json({ error: error.message })
@@ -51,19 +52,9 @@ const userExtractor = async (req, res, next) => {
   next()
 }
 
-const blogExtractor = async (req, res, next) => {
-  req.blog = await Blog.findOne({
-    where: {
-      id: req.body.blogId,
-    },
-  })
-  next()
-}
-
 module.exports = {
   unknownEndpoint,
   errorHandler,
   tokenExtractor,
   userExtractor,
-  blogExtractor,
 }

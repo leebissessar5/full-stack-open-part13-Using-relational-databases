@@ -19,12 +19,7 @@ app.use('/api/login', loginRouter)
 app.use('/api/authors', authorRouter)
 app.use(middleware.tokenExtractor)
 app.use('/api/blogs', middleware.userExtractor, blogsRouter)
-app.use(
-  '/api/readinglists',
-  middleware.userExtractor,
-  middleware.blogExtractor,
-  readingListRouter
-)
+app.use('/api/readinglists', middleware.userExtractor, readingListRouter)
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
 
