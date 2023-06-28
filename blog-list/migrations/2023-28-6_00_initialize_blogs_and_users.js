@@ -23,6 +23,14 @@ module.exports = {
         type: DataTypes.INTEGER,
         defaultValue: 0,
       },
+      year: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          min: 1991,
+          max: new Date().getFullYear(),
+        },
+      },
     })
     await queryInterface.createTable('users', {
       id: {
@@ -39,18 +47,18 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      passwordHash: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      createdAt: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
-      updatedAt: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
+    })
+    await queryInterface.addColumn('users', 'password_hash', {
+      type: DataTypes.STRING,
+      allowNull: false,
+    })
+    await queryInterface.addColumn('users', 'created_at', {
+      type: DataTypes.DATE,
+      allowNull: false,
+    })
+    await queryInterface.addColumn('users', 'updated_at', {
+      type: DataTypes.DATE,
+      allowNull: false,
     })
     await queryInterface.addColumn('blogs', 'user_id', {
       type: DataTypes.INTEGER,
