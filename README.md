@@ -3,6 +3,8 @@ Course hosted by the Department of Computer Science at the University of Helsink
 
 Main repository for Parts 1-7 located [here](https://github.com/leebissessar5/full-stack-open).
 
+[Course Certificate](https://studies.cs.helsinki.fi/stats/api/certificate/fs-psql/en/fe321f447d4caf5aac4a749d2d279eba)
+
 ## Part 13
 NoSQL databases became very common just over 10 years ago, when the scaling of the internet started to produce problems for relational databases that utilized the older generation SQL query language.
 
