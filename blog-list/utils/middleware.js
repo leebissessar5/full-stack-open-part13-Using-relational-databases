@@ -18,6 +18,7 @@ const errorHandler = (error, request, response, next) => {
       'ValidationError',
       'SyntaxError',
       'Error',
+      'ReferenceError',
     ].includes(error.name)
   ) {
     return response.status(400).json({ error: error.message })
@@ -48,6 +49,9 @@ const userExtractor = async (req, res, next) => {
   if (req.user && req.user.id) {
     const userId = req.user.id
     req.user = await User.findByPk(userId)
+    if (req.user.disabled) {
+      return res.status(401).json({ error: 'user disabled' })
+    }
   }
   next()
 }
