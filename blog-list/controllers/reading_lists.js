@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { Blog, User, ReadingList } = require('../models')
+const { Blog, ReadingList } = require('../models')
 
 const blogExtractor = async (req, res, next) => {
   req.blog = await Blog.findOne({
